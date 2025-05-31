@@ -1,7 +1,6 @@
 import styled, { ThemeProvider } from "styled-components";
 import { media } from "./media/media";
 import { use100vh } from "react-div-100vh";
-import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 
 export const Modal = ({ isOpen, onClose, children }: any) => {
@@ -46,7 +45,7 @@ export const modal2Forward = async ({
   children,
   theme = {},
   ...props
-}: Modal2ForwardPropsType) => {
+}: any) => {
   const div = document.createElement("div");
   document.body.appendChild(div);
   const root = createRoot(div); // Создаем root

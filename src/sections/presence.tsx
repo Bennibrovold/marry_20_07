@@ -1,9 +1,8 @@
-import React, { Children, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { media } from "../shared/media/media";
-import { Modal, modal2Forward } from "../shared/modal";
+import { modal2Forward } from "../shared/modal";
 import { GuestForm } from "../shared/modal-children";
-import { SecondForm } from "../shared/second-form";
 import { ThirdForm } from "../shared/third-form";
 
 const PresenceConfirmation = () => {
@@ -109,7 +108,7 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ variant?: any }>`
   background-color: ${(props) =>
     props.variant === "primary" ? "#000" : "transparent"};
   color: ${(props) => (props.variant === "primary" ? "#fff" : "#333")};
@@ -126,16 +125,4 @@ const Button = styled.button`
     background-color: ${(props) =>
       props.variant === "primary" ? "#1a1a1a" : "#f5f5f5"};
   }
-`;
-
-const ContactInfo = styled.div`
-  text-align: center;
-  font-family: sans-serif;
-  font-size: 14px;
-  color: #666;
-`;
-
-const Phone = styled.span`
-  font-weight: bold;
-  color: #000;
 `;

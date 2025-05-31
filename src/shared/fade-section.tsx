@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export const FadeInSection = ({ children }) => {
+export const FadeInSection = ({ children }: any) => {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export const FadeInSection = ({ children }) => {
       }
     );
 
-    observer.observe(ref.current);
+    observer.observe(ref.current as any);
 
     return () => observer.disconnect();
   }, []);

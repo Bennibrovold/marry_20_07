@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import groupImageSrc from "../assets/group.png";
 import groupBG from "../assets/group_bg.jpg";
@@ -40,16 +39,6 @@ const Container = styled.div`
   background-size: cover;
   background-position: center center;
   width: 100%;
-`;
-
-const BackgroundImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  mix-blend-mode: multiply; // Эффект накладки для создания текстуры
 `;
 
 const ContentWrapper = styled.div`

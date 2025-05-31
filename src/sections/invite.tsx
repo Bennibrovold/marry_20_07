@@ -2,8 +2,6 @@ import styled, { keyframes } from "styled-components";
 import { useMatchMedia } from "../shared/media/use-match-media";
 import FIRST from "../assets/1.jpg";
 import { media } from "../shared/media/media";
-import MJ from "../assets/1.svg";
-import MJ_MOBILE from "../assets/2.svg";
 import ARROW_DOWN from "../assets/arrow_down.webp";
 import ARROW_DOWN_WHITE from "../assets/arrow_down_white.webp";
 
@@ -74,16 +72,7 @@ const Image = styled.img`
     background-position: 48.056% 23.953%;
   }
 `;
-const ImageMJ = styled.img`
-  width: 134px;
-  flex-grow: 1;
-`;
 
-const ImageMJMobile = styled.img`
-  ${media.pure.less(media.size.md)} {
-    margin: 0px 20px;
-  }
-`;
 const Description = styled.div`
   width: 460px;
   max-height: 700px;

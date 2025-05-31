@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import CHAT_IMAGE from "../assets/chat.jpg";
 import { useMatchMedia } from "../shared/media/use-match-media";

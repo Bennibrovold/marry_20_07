@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import CEREMONY from "../assets/ceremony.svg";
-import CEREMONY_IMAGE from "../assets/ceremony_image.jpg";
 import { media } from "../shared/media/media";
 
 export const open = (link: string, blank?: boolean) => {
@@ -11,7 +9,7 @@ export const open = (link: string, blank?: boolean) => {
   }
 };
 
-export const Ceremony = ({ titleImg, text, sectionImg }) => {
+export const Ceremony = ({ titleImg, text, sectionImg }: any) => {
   return (
     <CeremonySection>
       <TitleWrapper>

@@ -12,7 +12,7 @@ export const GuestForm = () => {
   });
 
   // Обработчик изменения радио-кнопок
-  const handleRadioChange = (e) => {
+  const handleRadioChange = (e: any) => {
     setFormData((prevData) => ({
       ...prevData,
       dietaryPreferences: e.target.value,
@@ -20,7 +20,7 @@ export const GuestForm = () => {
   };
 
   // Обработчик изменения чекбоксов
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e: any) => {
     const { value, checked } = e.target;
     if (checked) {
       setFormData((prevData) => ({
@@ -38,7 +38,7 @@ export const GuestForm = () => {
   };
 
   // Обработчик изменения текстового поля
-  const handleTextChange = (e) => {
+  const handleTextChange = (e: any) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
@@ -46,7 +46,7 @@ export const GuestForm = () => {
   };
 
   // Обработчик отправки формы
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {

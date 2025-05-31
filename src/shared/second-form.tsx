@@ -12,7 +12,7 @@ export const SecondForm = () => {
   });
 
   // Обработчик изменения текстового поля
-  const handleTextChange = (e) => {
+  const handleTextChange = (e: any) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
@@ -20,7 +20,7 @@ export const SecondForm = () => {
   };
 
   // Обработчик отправки формы
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
@@ -162,37 +162,6 @@ const SectionTitle = styled.h3`
   margin-top: 2rem;
   margin-bottom: 1rem;
   text-align: left;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 0.5rem;
-`;
-
-const RadioGroup = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-`;
-
-const RadioButton = styled.input.attrs({ type: "radio" })`
-  margin-right: 0.5rem;
-`;
-
-const CheckboxGroup = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-`;
-
-const Checkbox = styled.input.attrs({ type: "checkbox" })`
-  margin-right: 0.5rem;
 `;
 
 const TextInput = styled.input`

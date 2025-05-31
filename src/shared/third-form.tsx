@@ -9,14 +9,14 @@ export const ThirdForm = () => {
   });
 
   // Обработчик изменения текстового поля
-  const handleTextChange = (e) => {
+  const handleTextChange = (e: any) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {

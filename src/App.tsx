@@ -3,8 +3,6 @@ import { Ceremony } from "./sections/ceremony";
 import { Date } from "./sections/date";
 import { Invite } from "./sections/invite";
 import { RelativesAndFriends } from "./sections/relatives-and-friends";
-import CEREMONY from "./assets/ceremony.svg";
-import CEREMONY_IMAGE from "./assets/ceremony_image.jpg";
 import LOCATION from "./assets/location.svg";
 import LOCATION_IMAGE from "./assets/location_image.jpg";
 import { Timing } from "./sections/timing";

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { media } from "../shared/media/media";
-import DATE_IMG from "../assets/date.svg";
 
 export const Date = () => {
   return (

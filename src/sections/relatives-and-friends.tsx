@@ -1,13 +1,9 @@
 import styled from "styled-components";
 import { media } from "../shared/media/media";
-import RELATIVES_AND_FRIENDS from "../assets/relatives-and-friends.svg";
-import RELATIVES_AND_FRIENDS_MOBILE from "../assets/relatives-and-friends-mobile.svg";
 import SEVEN from "../assets/7.jpg";
 import EIGHT from "../assets/8.jpg";
-import { useMatchMedia } from "../shared/media/use-match-media";
 
 export const RelativesAndFriends = () => {
-  const md = useMatchMedia((x) => x.less.md);
   return (
     <Wrapper>
       <Text>Scumpii noștri!</Text>
@@ -47,11 +43,6 @@ const Wrapper = styled.div`
     height: auto;
   }
 `;
-
-const TextImage = styled.img`
-  height: 70px;
-`;
-
 const Text = styled.span`
   font-family: "Dancing Script", cursive;
   font-size: 48px;
