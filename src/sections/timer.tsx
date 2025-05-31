@@ -94,7 +94,7 @@ const Container = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center top;
-  color: white;
+  color: #fff;
   font-family: "Roboto", sans-serif;
   position: relative;
 `;
@@ -112,6 +112,9 @@ const Content = styled.div`
   text-align: center;
   max-width: 760px;
   z-index: 1;
+  * {
+    color: #fff;
+  }
 `;
 
 const Title = styled.h1`

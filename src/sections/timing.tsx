@@ -8,7 +8,7 @@ export const Timing = () => {
 
       <TimelineList>
         <TimelineItem>
-          <Time>11:30</Time>
+          <Time>12:00</Time>
           <Description>Cununia religioasă (wedding ceremony)</Description>
         </TimelineItem>
         <TimelineItem>

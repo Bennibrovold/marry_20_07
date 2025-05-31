@@ -7,18 +7,9 @@ export const WishesBlock = () => {
 
       <Section>
         <Text>
-          Știm că este obișnuit să oferi flori de nuntă. Dacă alegeți să faceți
-          un astfel de cadou, ne-ar bucura în mod deosebit niște trandafiri albi
-          fără ambalaj. Aceste flori minunate vor deveni o decorație
-          suplimentară pentru nunta noastră.
-        </Text>
-      </Section>
-
-      <Section>
-        <Text>
-          Vom fi bucuroși să vă avem pe voi și pe copiii voștri, dar suntem
-          siguri că micuții vor fi mai confortabil acasă, decât într-un mediu
-          zgomotos de sărbătoare.
+          Știu ca este prima tradiția de a veni cu flori la nuntă, însă noi am
+          prefera să le înlocuiți cu o sticlă de băutură pentru a completa
+          colecția noastră.
         </Text>
       </Section>
 
