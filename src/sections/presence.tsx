@@ -14,7 +14,9 @@ const PresenceConfirmation = () => {
     if (isModalOpen) {
       modal2Forward({
         children: <GuestForm />,
-        onClose: () => setIsModalOpen(false),
+        onClose: () => {
+          setIsModalOpen(false);
+        },
         isOpen: isModalOpen,
       });
     }
