@@ -17,7 +17,7 @@ const DressCodeBlock = () => {
         <Text>
           Noi am ales tematica neagră pentru nunta noastră, pentru a crea o
           atmosferă elegantă și stilată. Vom fi recunoscători dacă ne veți
-          susține în această alegere dând preferința aceste game colore și
+          susține în această alegere dând preferința acestei game colore și
           stilistice.
         </Text>
       </ContentWrapper>
