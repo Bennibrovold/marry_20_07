@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import styled from "styled-components";
 import { media } from "../shared/media/media";
-import { Modal } from "../shared/modal";
+import { Modal, modal2Forward } from "../shared/modal";
 import { GuestForm } from "../shared/modal-children";
 import { SecondForm } from "../shared/second-form";
 import { ThirdForm } from "../shared/third-form";
@@ -10,6 +10,37 @@ const PresenceConfirmation = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      modal2Forward({
+        children: <GuestForm />,
+        onClose: () => setIsModalOpen(false),
+        isOpen: isModalOpen,
+      });
+    }
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    if (isModalOpen2) {
+      modal2Forward({
+        children: <GuestForm />,
+        onClose: () => setIsModalOpen2(false),
+        isOpen: isModalOpen2,
+      });
+    }
+  }, [isModalOpen2]);
+
+  useEffect(() => {
+    if (isModalOpen3) {
+      modal2Forward({
+        children: <ThirdForm />,
+        onClose: () => setIsModalOpen3(false),
+        isOpen: isModalOpen3,
+      });
+    }
+  }, [isModalOpen3]);
+
   return (
     <Container>
       <Title>Confirmați prezența </Title>
@@ -31,15 +62,6 @@ const PresenceConfirmation = () => {
           Nu voi putea fi
         </Button>
       </ButtonsWrapper>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <GuestForm />
-      </Modal>
-      <Modal isOpen={isModalOpen2} onClose={() => setIsModalOpen2(false)}>
-        <SecondForm />
-      </Modal>
-      <Modal isOpen={isModalOpen3} onClose={() => setIsModalOpen3(false)}>
-        <ThirdForm />
-      </Modal>
     </Container>
   );
 };

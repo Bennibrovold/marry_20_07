@@ -1,31 +1,76 @@
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
+import { media } from "./media/media";
+import { use100vh } from "react-div-100vh";
+import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 export const Modal = ({ isOpen, onClose, children }: any) => {
+  const height = use100vh();
   if (!isOpen) return null;
 
   return (
-    <Overlay onClick={onClose}>
-      <CloseButton aria-label="Закрыть" onClick={onClose}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          width="100"
-          height="100"
-          viewBox="0 0 50 50"
-        >
-          {" "}
-          <path
-            fill="#fff"
-            d="M 40.783203 7.2714844 A 2.0002 2.0002 0 0 0 39.386719 7.8867188 L 25.050781 22.222656 L 10.714844 7.8867188 A 2.0002 2.0002 0 0 0 9.2792969 7.2792969 A 2.0002 2.0002 0 0 0 7.8867188 10.714844 L 22.222656 25.050781 L 7.8867188 39.386719 A 2.0002 2.0002 0 1 0 10.714844 42.214844 L 25.050781 27.878906 L 39.386719 42.214844 A 2.0002 2.0002 0 1 0 42.214844 39.386719 L 27.878906 25.050781 L 42.214844 10.714844 A 2.0002 2.0002 0 0 0 40.783203 7.2714844 z"
-          ></path>{" "}
-        </svg>
-      </CloseButton>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
-        <div>{children}</div>
-      </ModalContainer>
-    </Overlay>
+    <div
+      style={{
+        height: height + "px",
+        position: "fixed",
+        top: 0,
+        zIndex: 10000,
+      }}
+    >
+      <Overlay onClick={onClose}>
+        <CloseButton aria-label="Закрыть" onClick={onClose}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="100"
+            height="100"
+            viewBox="0 0 50 50"
+          >
+            {" "}
+            <path
+              fill="#fff"
+              d="M 40.783203 7.2714844 A 2.0002 2.0002 0 0 0 39.386719 7.8867188 L 25.050781 22.222656 L 10.714844 7.8867188 A 2.0002 2.0002 0 0 0 9.2792969 7.2792969 A 2.0002 2.0002 0 0 0 7.8867188 10.714844 L 22.222656 25.050781 L 7.8867188 39.386719 A 2.0002 2.0002 0 1 0 10.714844 42.214844 L 25.050781 27.878906 L 39.386719 42.214844 A 2.0002 2.0002 0 1 0 42.214844 39.386719 L 27.878906 25.050781 L 42.214844 10.714844 A 2.0002 2.0002 0 0 0 40.783203 7.2714844 z"
+            ></path>{" "}
+          </svg>
+        </CloseButton>
+        <ModalContainer onClick={(e) => e.stopPropagation()}>
+          <div>{children}</div>
+        </ModalContainer>
+      </Overlay>
+    </div>
   );
+};
+
+export const modal2Forward = async ({
+  children,
+  theme = {},
+  ...props
+}: Modal2ForwardPropsType) => {
+  const div = document.createElement("div");
+  document.body.appendChild(div);
+  const root = createRoot(div); // Создаем root
+
+  await new Promise<void>((resolve) => {
+    const close = () => {
+      if (props?.close) props.close();
+      resolve();
+    };
+
+    root.render(
+      <ThemeProvider theme={theme}>
+        <Modal isOpen={true} onClose={close}>
+          {typeof children === "function"
+            ? children({ handleClose: close })
+            : children}
+        </Modal>
+      </ThemeProvider>
+    );
+  });
+
+  // Очистка
+  root.unmount();
+  div.remove();
 };
 
 const Overlay = styled.div`
@@ -46,6 +91,10 @@ const Overlay = styled.div`
   padding: 0 20px;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 10;
+
+  ${media.pure.less(media.size.md)} {
+    padding: 0px;
+  }
 `;
 
 const ModalContainer = styled.div`
@@ -59,6 +108,14 @@ const ModalContainer = styled.div`
   opacity: 1;
   transition: all 0.3s ease;
   margin: 65px auto;
+
+  ${media.pure.less(media.size.md)} {
+    max-width: 100%;
+    margin: 0px auto;
+    border-radius: 0;
+    height: calc(100vh);
+    overflow-y: auto;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -81,5 +138,15 @@ const CloseButton = styled.button`
     width: 32px;
     height: 32px;
     color: #ffffff;
+  }
+
+  ${media.pure.less(media.size.md)} {
+    top: 10px;
+    right: 10px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 `;

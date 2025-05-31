@@ -3,6 +3,14 @@ import CEREMONY from "../assets/ceremony.svg";
 import CEREMONY_IMAGE from "../assets/ceremony_image.jpg";
 import { media } from "../shared/media/media";
 
+export const open = (link: string, blank?: boolean) => {
+  if (blank) {
+    window.open(link, "_blank");
+  } else {
+    window.open(link);
+  }
+};
+
 export const Ceremony = ({ titleImg, text, sectionImg }) => {
   return (
     <CeremonySection>
@@ -24,7 +32,9 @@ export const Ceremony = ({ titleImg, text, sectionImg }) => {
         <img src={sectionImg} alt="Wedding Invitation" />
       </ImageContainer>
 
-      <Button>Deschide-ți harta </Button>
+      <Button onClick={() => open("https://g.co/kgs/TvGbySD", true)}>
+        Deschide-ți harta{" "}
+      </Button>
     </CeremonySection>
   );
 };
