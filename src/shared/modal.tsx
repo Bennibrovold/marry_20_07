@@ -52,15 +52,15 @@ export const modal2Forward = async ({
 
   await new Promise<void>((resolve) => {
     const close = () => {
-      if (props?.close) props.close();
+      if (props?.onClose) props.onClose();
       resolve();
     };
 
     root.render(
       <ThemeProvider theme={theme}>
-        <Modal isOpen={true} onClose={close}>
+        <Modal {...props}>
           {typeof children === "function"
-            ? children({ handleClose: close })
+            ? children({ onClose: close })
             : children}
         </Modal>
       </ThemeProvider>
