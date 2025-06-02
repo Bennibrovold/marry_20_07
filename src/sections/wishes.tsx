@@ -7,7 +7,7 @@ export const WishesBlock = () => {
 
       <Section>
         <Text>
-          Știu ca este prima tradiția de a veni cu flori la nuntă, însă noi am
+          Știu ca este primită tradiția de a veni cu flori la nuntă, însă noi am
           prefera să le înlocuiți cu o sticlă de băutură pentru a completa
           colecția noastră.
         </Text>

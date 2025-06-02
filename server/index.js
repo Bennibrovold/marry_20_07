@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import TelegramBot from "node-telegram-bot-api";
 import mongoose from "mongoose";
+import fs from "fs";
+import https from "https";
 
 // Инициализация Express
 const app = express();
@@ -10,7 +12,11 @@ const PORT = 4444;
 
 // Настройки CORS
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: [
+    "https://igorandvalentina.com",
+    "http://localhost:5173",
+    "http://109.110.36.201:1114",
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
@@ -32,10 +38,36 @@ const checkInternet = async () => {
   }
 };
 
-const run = () => {
+// Схемы Mongoose
+const SubscriberSchema = new mongoose.Schema({
+  chat_id: { type: Number, required: true, unique: true },
+  first_name: String,
+  last_name: String,
+  created_at: { type: Date, default: Date.now },
+});
+
+const FormSubmissionSchema = new mongoose.Schema({
+  type: { type: String, enum: ["solo", "family", "reject"], required: true },
+  name: { type: String, required: true },
+  dietary_preferences: String,
+  allergies: String,
+  alcohol_preferences: [String],
+  created_at: { type: Date, default: Date.now },
+});
+
+const Subscriber = mongoose.model("Subscriber", SubscriberSchema);
+const FormSubmission = mongoose.model("FormSubmission", FormSubmissionSchema);
+
+let bot = null; // Выносим бота в глобальную область видимости
+
+const run = async () => {
+  if (bot?.stopPolling) {
+    await bot.stopPolling();
+    console.log("🛑 Предыдущий экземпляр бота остановлен");
+  }
   // Telegram Bot
   const TELEGRAM_BOT_TOKEN = "7648027896:AAHlcDo4nPkfu_SzEna7xHoP6SKZ352uEbA";
-  const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
+  bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 
   bot.on("polling_error", async (error) => {
     console.error("❌ Polling Error:", error.message);
@@ -52,26 +84,6 @@ const run = () => {
     .connect("mongodb://localhost:27017/wedding_bot")
     .then(() => console.log("MongoDB connected"))
     .catch((err) => console.error("MongoDB connection error:", err));
-
-  // Схемы Mongoose
-  const SubscriberSchema = new mongoose.Schema({
-    chat_id: { type: Number, required: true, unique: true },
-    first_name: String,
-    last_name: String,
-    created_at: { type: Date, default: Date.now },
-  });
-
-  const FormSubmissionSchema = new mongoose.Schema({
-    type: { type: String, enum: ["solo", "family", "reject"], required: true },
-    name: { type: String, required: true },
-    dietary_preferences: String,
-    allergies: String,
-    alcohol_preferences: [String],
-    created_at: { type: Date, default: Date.now },
-  });
-
-  const Subscriber = mongoose.model("Subscriber", SubscriberSchema);
-  const FormSubmission = mongoose.model("FormSubmission", FormSubmissionSchema);
 
   // Middleware
   app.use(bodyParser.json());
@@ -104,33 +116,25 @@ const run = () => {
   });
 
   app.post("/api/family", async (req, res) => {
-    const { name, allergies, alimentare, alcohol } = req.body;
+    const { name } = req.body;
 
-    if (!name || !allergies || !alimentare || !alcohol) {
+    if (!name) {
       return res
         .status(400)
         .json({ error: "Toate câmpurile obligatorii lipsesc" });
     }
 
     try {
-      const alcoholPreferences = [alcohol];
-      const dietaryPreferences = alimentare;
       // Сохраняем в MongoDB
       await new FormSubmission({
         type: "family",
         name,
-        dietary_preferences: dietaryPreferences,
-        allergies: allergies || "Nu sunt",
-        alcohol_preferences: alcoholPreferences,
       }).save();
 
       // Формируем сообщение
       const message = `
   🎉 A fost completat un nou formular!\n\n
   👤 Nume: <b>${name}</b>\n
-  🥗 Preferință alimentară: ${dietaryPreferences}\n
-  🍷 Alcool preferat: ${alcoholPreferences.join(", ") || "Niciunul"}\n
-  ⚠️ Alergii: ${allergies || "Nu sunt"}
       `;
 
       await sendTelegramNotifications(message);
@@ -142,10 +146,10 @@ const run = () => {
   });
 
   app.post("/api/solo", async (req, res) => {
-    const { name, dietaryPreferences, allergies, alcoholPreferences } =
-      req.body;
+    const { name } = req.body;
 
-    if (!name || !dietaryPreferences || !alcoholPreferences) {
+    if (!name) {
+      console.log(name);
       return res
         .status(400)
         .json({ error: "Toate câmpurile obligatorii lipsesc" });
@@ -156,18 +160,12 @@ const run = () => {
       await new FormSubmission({
         type: "solo",
         name,
-        dietary_preferences: dietaryPreferences,
-        allergies: allergies || "Nu sunt",
-        alcohol_preferences: alcoholPreferences,
       }).save();
 
       // Формируем сообщение
       const message = `
 🎉 A fost completat un nou formular!\n\n
 👤 Nume: <b>${name}</b>\n
-🥗 Preferință alimentară: ${dietaryPreferences}\n
-🍷 Alcool preferat: ${alcoholPreferences.join(", ") || "Niciunul"}\n
-⚠️ Alergii: ${allergies || "Nu sunt"}
     `;
 
       await sendTelegramNotifications(message);
@@ -231,12 +229,16 @@ const run = () => {
       console.error("Error sending notifications:", error);
     }
   }
-
-  // Запуск сервера
-  app.listen(PORT, () => {
-    console.log(`Serverul rulează pe http://localhost:${PORT}`);
-  });
 };
+
+const sslOptions = {
+  key: fs.readFileSync("/home/server/ssl/privkey.pem"),
+  cert: fs.readFileSync("/home/server/ssl/fullchain.pem"),
+};
+
+https.createServer(sslOptions, app).listen(PORT, () => {
+  console.log(`Serverul rulează pe http://localhost:${PORT}`);
+});
 
 // 5. Переподключение при ошибках
 let reconnectAttempts = 0;
@@ -265,21 +267,8 @@ async function reconnect() {
       return;
     }
 
-    // Останавливаем старый инстанс бота (если он был)
-    if (bot?.stopPolling) bot.stopPolling();
-
-    // Запускаем заново
-    startBot();
+    run();
   }, delay);
 }
-
-// 6. Дополнительно: проверка интернета раз в 30 секунд
-setInterval(async () => {
-  const isOnline = await checkInternet();
-  if (!isOnline) {
-    console.log("🔴 Интернет пропал! Пытаюсь переподключиться...");
-    await reconnect();
-  }
-}, 30000);
 
 run();

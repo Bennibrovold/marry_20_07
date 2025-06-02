@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import FIRST from "../assets/1.jpg";
+import { host } from "./host";
 
 export const ThirdForm = () => {
   const [success, setSuccess] = useState<boolean>(false);
@@ -20,7 +21,7 @@ export const ThirdForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4444/api/reject", {
+      const response = await fetch(`${host}/api/reject`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +64,7 @@ export const ThirdForm = () => {
               name="name"
               value={formData.name}
               onChange={handleTextChange}
-              placeholder="Иван Смирнов"
+              placeholder="Nume Prenume"
             />
 
             {/* Кнопка отправки */}

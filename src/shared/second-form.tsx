@@ -1,13 +1,24 @@
 import { useState } from "react";
 import styled from "styled-components";
 import FIRST from "../assets/1.jpg";
+import { host } from "./host";
+
+const openTelegramGroup = () => {
+  // URL группы (ваша ссылка https://t.me/+sgzc3drwhiMwOGEy)
+  const groupUrl = "https://t.me/+sgzc3drwhiMwOGEy";
+
+  // Пробуем открыть в приложении Telegram
+  const tgAppUrl = groupUrl;
+
+  console.log("open");
+
+  // Открываем ссылку (сначала попробуем в приложении, потом в браузере)
+  window.open(tgAppUrl, "_blank") || window.open(groupUrl, "_blank");
+};
 
 export const SecondForm = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [formData, setFormData] = useState({
-    allergies: "",
-    alimentare: "",
-    alcohol: "",
     name: "",
   });
 
@@ -24,7 +35,7 @@ export const SecondForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4444/api/family", {
+      const response = await fetch(`${host}/api/family`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,6 +45,7 @@ export const SecondForm = () => {
 
       if (response.ok) {
         setSuccess(true);
+        openTelegramGroup();
       } else {
         setSuccess(false);
       }
@@ -63,40 +75,13 @@ export const SecondForm = () => {
           <Green>Mulțumesc</Green>
         ) : (
           <Form onSubmit={handleSubmit}>
-            {/* Вкусовые предпочтения */}
-            <SectionTitle>Preferințe alimentare:</SectionTitle>
-            <TextInput
-              name="alimentare"
-              value={formData.alimentare}
-              onChange={handleTextChange}
-              placeholder="Mănâncăm de toate."
-            />
-            {/* Алергии */}
-            <SectionTitle>Aveți alergii la anumite alimente?</SectionTitle>
-            <TextInput
-              name="allergies"
-              value={formData.allergies}
-              onChange={handleTextChange}
-              placeholder="Da, am alergie la nuci"
-            />
-
-            {/* Предпочтения алкоголя */}
-            <SectionTitle>Ce tip de alcool preferați?</SectionTitle>
-            <p>Selectați una sau mai multe băuturi:</p>
-            <TextInput
-              name="alcohol"
-              value={formData.alcohol}
-              onChange={handleTextChange}
-              placeholder="Ivan – whisky, votcă; Veronica – vin spumos, konjak."
-            />
-
             {/* Имя и фамилия */}
             <SectionTitle>Numele și prenumele dumneavoastră</SectionTitle>
             <TextInput
               name="name"
               value={formData.name}
               onChange={handleTextChange}
-              placeholder="Иван Смирнов"
+              placeholder="Nume Prenume"
             />
 
             {/* Кнопка отправки */}

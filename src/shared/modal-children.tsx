@@ -1,41 +1,26 @@
 import { useState } from "react";
 import styled from "styled-components";
 import FIRST from "../assets/1.jpg";
+import { host } from "./host";
+
+const openTelegramGroup = () => {
+  // URL группы (ваша ссылка https://t.me/+sgzc3drwhiMwOGEy)
+  const groupUrl = "https://t.me/+sgzc3drwhiMwOGEy";
+
+  // Пробуем открыть в приложении Telegram
+  const tgAppUrl = groupUrl;
+
+  console.log("open");
+
+  // Открываем ссылку (сначала попробуем в приложении, потом в браузере)
+  window.open(tgAppUrl, "_blank") || window.open(groupUrl, "_blank");
+};
 
 export const GuestForm = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [formData, setFormData] = useState({
-    dietaryPreferences: "no_meat",
-    allergies: "",
-    alcoholPreferences: ["sparkling_wine"],
     name: "",
   });
-
-  // Обработчик изменения радио-кнопок
-  const handleRadioChange = (e: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      dietaryPreferences: e.target.value,
-    }));
-  };
-
-  // Обработчик изменения чекбоксов
-  const handleCheckboxChange = (e: any) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setFormData((prevData) => ({
-        ...prevData,
-        alcoholPreferences: [...prevData.alcoholPreferences, value],
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        alcoholPreferences: prevData.alcoholPreferences.filter(
-          (item) => item !== value
-        ),
-      }));
-    }
-  };
 
   // Обработчик изменения текстового поля
   const handleTextChange = (e: any) => {
@@ -50,7 +35,7 @@ export const GuestForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4444/api/solo", {
+      const response = await fetch(`${host}/api/solo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,6 +45,7 @@ export const GuestForm = () => {
 
       if (response.ok) {
         setSuccess(true);
+        openTelegramGroup();
       } else {
         setSuccess(false);
       }
@@ -89,115 +75,13 @@ export const GuestForm = () => {
           <Green>Mulțumesc</Green>
         ) : (
           <Form onSubmit={handleSubmit}>
-            {/* Вкусовые предпочтения */}
-            <SectionTitle>Preferințe alimentare:</SectionTitle>
-            <RadioGroup>
-              <Label>
-                <RadioButton
-                  value="no_meat"
-                  checked={formData.dietaryPreferences === "no_meat"}
-                  onChange={handleRadioChange}
-                />
-                Nu mănânc carne
-              </Label>
-              <Label>
-                <RadioButton
-                  value="no_fish"
-                  checked={formData.dietaryPreferences === "no_fish"}
-                  onChange={handleRadioChange}
-                />
-                Nu mănânc pește
-              </Label>
-              <Label>
-                <RadioButton
-                  value="vegetarian"
-                  checked={formData.dietaryPreferences === "vegetarian"}
-                  onChange={handleRadioChange}
-                />
-                Sunt vegetarian/vegetariană
-              </Label>
-              <Label>
-                <RadioButton
-                  value="eat_all"
-                  checked={formData.dietaryPreferences === "eat_all"}
-                  onChange={handleRadioChange}
-                />
-                Mănânc de toate
-              </Label>
-            </RadioGroup>
-
-            {/* Алергии */}
-            <SectionTitle>Aveți alergii la anumite alimente?</SectionTitle>
-            <TextInput
-              name="allergies"
-              value={formData.allergies}
-              onChange={handleTextChange}
-              placeholder="Da, am alergie la nuci"
-            />
-
-            {/* Предпочтения алкоголя */}
-            <SectionTitle>Ce tip de alcool preferați?</SectionTitle>
-            <p>Selectați una sau mai multe băuturi:</p>
-            <CheckboxGroup>
-              <Label>
-                <Checkbox
-                  value="sparkling_wine"
-                  checked={formData.alcoholPreferences.includes(
-                    "sparkling_wine"
-                  )}
-                  onChange={handleCheckboxChange}
-                />
-                Vin spumos
-              </Label>
-              <Label>
-                <Checkbox
-                  value="cognac"
-                  checked={formData.alcoholPreferences.includes("cognac")}
-                  onChange={handleCheckboxChange}
-                />
-                Konjak / Cognac (se poate folosi ambele)
-              </Label>
-              <Label>
-                <Checkbox
-                  value="whiskey"
-                  checked={formData.alcoholPreferences.includes("whiskey")}
-                  onChange={handleCheckboxChange}
-                />
-                Whisky
-              </Label>
-              <Label>
-                <Checkbox
-                  value="vodka"
-                  checked={formData.alcoholPreferences.includes("vodka")}
-                  onChange={handleCheckboxChange}
-                />
-                Vodcă
-              </Label>
-              <Label>
-                <Checkbox
-                  value="rum"
-                  checked={formData.alcoholPreferences.includes("rum")}
-                  onChange={handleCheckboxChange}
-                />
-                Rom
-              </Label>
-              <Label>
-                <Checkbox
-                  value="no_alcohol"
-                  checked={formData.alcoholPreferences.includes("no_alcohol")}
-                  onChange={handleCheckboxChange}
-                />
-                Nu voi consuma alcool
-              </Label>
-            </CheckboxGroup>
-
             {/* Имя и фамилия */}
             <SectionTitle>Numele și prenumele dumneavoastră</SectionTitle>
             <TextInput
               name="name"
               value={formData.name}
               onChange={handleTextChange}
-              placeholder="Иван Смирнов"
+              placeholder="Nume Prenume"
             />
 
             {/* Кнопка отправки */}
@@ -263,37 +147,6 @@ const SectionTitle = styled.h3`
   margin-top: 2rem;
   margin-bottom: 1rem;
   text-align: left;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 0.5rem;
-`;
-
-const RadioGroup = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-`;
-
-const RadioButton = styled.input.attrs({ type: "radio" })`
-  margin-right: 0.5rem;
-`;
-
-const CheckboxGroup = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-`;
-
-const Checkbox = styled.input.attrs({ type: "checkbox" })`
-  margin-right: 0.5rem;
 `;
 
 const TextInput = styled.input`

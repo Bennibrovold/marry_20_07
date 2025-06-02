@@ -2,6 +2,19 @@ import styled from "styled-components";
 import CHAT_IMAGE from "../assets/chat.jpg";
 import { useMatchMedia } from "../shared/media/use-match-media";
 
+const openTelegramGroup = () => {
+  // URL группы (ваша ссылка https://t.me/+sgzc3drwhiMwOGEy)
+  const groupUrl = "https://t.me/+sgzc3drwhiMwOGEy";
+
+  // Пробуем открыть в приложении Telegram
+  const tgAppUrl = groupUrl;
+
+  console.log("open");
+
+  // Открываем ссылку (сначала попробуем в приложении, потом в браузере)
+  window.open(tgAppUrl, "_blank") || window.open(groupUrl, "_blank");
+};
+
 const ChatBlock = () => {
   const md = useMatchMedia((x) => x.less.md);
 
@@ -15,7 +28,7 @@ const ChatBlock = () => {
           posta poze/video din seara nunții pentru a salva cât mai multe
           amintiri și de a fi pe fir cu toții.
         </Text>
-        <Button>Acesează</Button>
+        <Button onClick={() => openTelegramGroup()}>Acesează</Button>
       </ContainerMobile>
     );
   }
@@ -29,7 +42,7 @@ const ChatBlock = () => {
           posta poze/video din seara nunții pentru a salva cât mai multe
           amintiri și de a fi pe fir cu toții.
         </Text>
-        <Button>Acesează</Button>
+        <Button onClick={() => openTelegramGroup()}>Acesează</Button>
       </LeftColumn>
 
       <RightColumn>
